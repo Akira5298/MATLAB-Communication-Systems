@@ -4,6 +4,8 @@ A MATLAB-based communication system developed to investigate multi-carrier modul
 
 The main system uses **five-carrier double-sideband suppressed-carrier (DSB-SC) modulation**, coherent demodulation, FIR filtering, and weighted signal reconstruction. Additional standalone experiments explore 8-PSK modulation, Fourier spectrum replication, and digital filter frequency responses.
 
+The original design was developed for the **ELEC1323 — Introduction to Signals, Control and Communications** coursework at the University of Southampton. The repository has subsequently been refined with a standalone simulation driver, additional experiments, and automated figure exports.
+
 ## Overview
 
 - Five-carrier analogue modulation at 6, 8, 10, 12 and 14 Hz.
@@ -28,39 +30,42 @@ The simulation generates a band-limited message, modulates it onto five carriers
 
 ### Transmitter and Receiver Design
 
-```mermaid
-flowchart TB
-    X["Original message x(t)"] --> A["Scale input by 34.6"]
-    subgraph TX["Transmitter — multi-carrier DSB-SC"]
-        A --> T1["6 Hz × 0.3"]
-        A --> T2["8 Hz × 0.9"]
-        A --> T3["10 Hz × 1.0"]
-        A --> T4["12 Hz × 0.9"]
-        A --> T5["14 Hz × 0.3"]
-        T1 --> S["Weighted sum"]
-        T2 --> S
-        T3 --> S
-        T4 --> S
-        T5 --> S
-        S --> F["FFT-based spectral scaling"]
-    end
-    F --> Y["Transmitted signal y(t)"]
-    Y --> C["Add AWGN"]
-    C --> R["Noisy received signal"]
-    subgraph RX["Receiver — coherent demodulation"]
-        R --> R1["6 Hz · LPF · 0.3"]
-        R --> R2["8 Hz · LPF · 0.7"]
-        R --> R3["10 Hz · LPF · 1.0"]
-        R --> R4["12 Hz · LPF · 0.7"]
-        R --> R5["14 Hz · LPF · 0.3"]
-        R1 --> W["Weighted sum"]
-        R2 --> W
-        R3 --> W
-        R4 --> W
-        R5 --> W
-        W --> D["Remove DC offset and RMS normalise"]
-    end
-    D --> H["Reconstructed message"]
+```text
+                         Original message x(t)
+                                   |
+                           Scale input by 34.6
+                                   |
+              +---------+----------+----------+---------+
+              |         |          |          |         |
+           6 Hz       8 Hz       10 Hz      12 Hz     14 Hz
+           x 0.3      x 0.9      x 1.0      x 0.9     x 0.3
+              |         |          |          |         |
+              +---------+----------+----------+---------+
+                                   |
+                              Weighted sum
+                                   |
+                        FFT-based spectral scaling
+                                   |
+                          Transmitted signal y(t)
+                                   |
+                              Add AWGN
+                                   |
+                         Noisy received signal
+                                   |
+              +---------+----------+----------+---------+
+              |         |          |          |         |
+           6 Hz       8 Hz       10 Hz      12 Hz     14 Hz
+           LPF        LPF        LPF        LPF       LPF
+           1 Hz       1 Hz       1 Hz       1 Hz      1 Hz
+           x 0.3      x 0.7      x 1.0      x 0.7     x 0.3
+              |         |          |          |         |
+              +---------+----------+----------+---------+
+                                   |
+                              Weighted sum
+                                   |
+                   Remove DC offset and RMS normalise
+                                   |
+                          Reconstructed message
 ```
 
 Each transmitter branch multiplies the entire message by a cosine at the specified carrier frequency and applies its weight. Each receiver branch multiplies the received signal by the corresponding cosine, applies a **1.0 Hz low-pass FIR filter**, and applies its receiver weight.
@@ -164,7 +169,7 @@ Coherent demodulation, filtering and weighted combining recover the original low
 Reconstruction performance is evaluated by comparing the original message power with the mean squared reconstruction error:
 
 $$
-\mathrm{SNR}_{\mathrm{dB}}=10\log_{10}\left(\frac{\operatorname{mean}(x^2)}{\operatorname{mean}((x-\hat{x})^2)}\right)
+\mathrm{SNR}_{\mathrm{dB}}=10\log_{10}\left(\frac{\mathrm{mean}(x^2)}{\mathrm{mean}((x-\hat{x})^2)}\right)
 $$
 
 | Simulation | Reconstruction SNR |
@@ -361,5 +366,8 @@ The transmitter, receiver and individual filter files are functions called by th
 - The standalone driver uses independently selected message and noise parameters, so it does not exactly reproduce the original university test environment.
 - SVG explanations are illustrative. PNG files in `images/generated/` show the actual MATLAB outputs.
 
+## Acknowledgements
 
-\*The original transmitter and receiver design was developed for the **ELEC1323 — Introduction to Signals, Control and Communications** module at the University of Southampton. The low-pass and high-pass filter helpers originated from university coursework materials. Subsequent documentation, code refinements and the standalone simulation driver were prepared with AI assistance.
+The original transmitter and receiver design was developed for the **ELEC1323 — Introduction to Signals, Control and Communications** module at the University of Southampton. The low-pass and high-pass filter helpers originated from university coursework materials. Subsequent documentation, code refinements and the standalone simulation driver were prepared with AI assistance.
+
+University-supplied materials and assessed coursework remain subject to applicable copyright and academic-integrity requirements. Public redistribution of code, diagrams and results should only take place with appropriate permission.
