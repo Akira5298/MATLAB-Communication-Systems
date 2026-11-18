@@ -332,5 +332,5 @@ The transmitter, receiver and individual filter files are functions called by th
 - The standalone driver uses independently selected message and noise parameters, so it does not exactly reproduce the original university test environment.
 - SVG explanations are illustrative. PNG files in `images/generated/` show the actual MATLAB outputs.
 
-
+------------------------------------------------------------------------------------------------------------------------------------------------
 *The original transmitter and receiver design was developed for the **ELEC1323 — Introduction to Signals, Control and Communications** module at the University of Southampton. The low-pass and high-pass filter helpers originated from university coursework materials. Subsequent documentation, code refinements and the standalone simulation driver were prepared with AI assistance.
