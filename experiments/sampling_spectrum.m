@@ -1,31 +1,50 @@
-% Parameters
-omega_s = 4000; % Sampling frequency in rad/s
-omega = -7000*pi : 10 : 7000*pi; % Frequency axis in rad/s
+% Visualise the Fourier spectrum of a sampled signal
 
-% Define original frequencies (in rad/s)
+clear;
+clc;
+close all;
+
+% Parameters
+omega_s = 4000;  % Sampling angular frequency (rad/s)
+omega_range = [-7000*pi, 7000*pi];  % Frequency axis in rad/s
+
+% Define original frequencies (rad/s) and amplitudes
 original_freqs = [2000*pi, 5000*pi, 7000*pi];
 amplitudes = [1, 0.05, 0.05];
 
-% Create spectrum of sampled signal (replications)
-X_sampled = zeros(size(omega));
+% Create arrays for the sampled signal spectrum (replications)
+omega = [];
+X_sampled = [];
 
-% Generate replicas at multiples of sampling freq (up to +/-2)
-replication_range = -2:2; % add more if needed
+% Generate replicas at multiples of the sampling frequency
+replication_range = -2:2;
 
 for k = replication_range
     shift = k * omega_s;
+
     for i = 1:length(original_freqs)
-        % Add delta spikes at shifted positions
-        X_sampled(abs(omega - (original_freqs(i) + shift)) < 10) = amplitudes(i);
-        X_sampled(abs(omega - (-original_freqs(i) + shift)) < 10) = amplitudes(i);
+
+        % Calculate positive and negative spectral components
+        positive_freq = original_freqs(i) + shift;
+        negative_freq = -original_freqs(i) + shift;
+
+        % Store spectral locations and amplitudes
+        omega = [omega, positive_freq, negative_freq];
+        X_sampled = [X_sampled, amplitudes(i), amplitudes(i)];
+
     end
 end
 
-% Plot
+% Combine any overlapping spectral components
+[omega, ~, indices] = unique(omega);
+X_sampled = accumarray(indices(:), X_sampled(:)).';
+
+% Plot the sampled signal spectrum
 figure;
 stem(omega, X_sampled, 'filled');
 xlabel('\omega (rad/s)');
-ylabel('Amplitude');
+ylabel('Relative Amplitude');
 title('Fourier Transform of Sampled Signal g(t)');
-xlim([-7000*pi, 7000*pi]);
+xlim(omega_range);
 grid on;
+
