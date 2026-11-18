@@ -22,11 +22,11 @@ The original design was developed for the **ELEC1323 — Introduction to Signals
 
 ## System Architecture
 
-The simulation generates a band-limited message, modulates it onto five carriers, adds AWGN, and reconstructs the message using coherent demodulation and weighted combining.
-
 <p align="center">
   <img src="images/explanation/workflow.svg" alt="Communication system workflow" width="460">
 </p>
+
+The simulation generates a band-limited message, modulates it onto five carriers, adds AWGN, and reconstructs the message using coherent demodulation and weighted combining.
 
 ### Transmitter and Receiver Design
 
