@@ -4,8 +4,6 @@ A MATLAB-based communication system developed to investigate multi-carrier modul
 
 The main system uses **five-carrier double-sideband suppressed-carrier (DSB-SC) modulation**, coherent demodulation, FIR filtering, and weighted signal reconstruction. Additional standalone experiments explore 8-PSK modulation, Fourier spectrum replication, and digital filter frequency responses.
 
-The original design was developed for the **ELEC1323 — Introduction to Signals, Control and Communications** coursework at the University of Southampton. The repository has subsequently been refined with a standalone simulation driver, additional experiments, and automated figure exports.
-
 ## Overview
 
 - Five-carrier analogue modulation at 6, 8, 10, 12 and 14 Hz.
@@ -334,8 +332,4 @@ The transmitter, receiver and individual filter files are functions called by th
 - The standalone driver uses independently selected message and noise parameters, so it does not exactly reproduce the original university test environment.
 - SVG explanations are illustrative. PNG files in `images/generated/` show the actual MATLAB outputs.
 
-## Acknowledgements
-
-The original transmitter and receiver design was developed for the **ELEC1323 — Introduction to Signals, Control and Communications** module at the University of Southampton. The low-pass and high-pass filter helpers originated from university coursework materials. Subsequent documentation, code refinements and the standalone simulation driver were prepared with AI assistance.
-
-University-supplied materials and assessed coursework remain subject to applicable copyright and academic-integrity requirements. Public redistribution of code, diagrams and results should only take place with appropriate permission.
+*The original transmitter and receiver design was developed for the **ELEC1323 — Introduction to Signals, Control and Communications** module at the University of Southampton. The low-pass and high-pass filter helpers originated from university coursework materials. Subsequent documentation, code refinements and the standalone simulation driver were prepared with AI assistance.
