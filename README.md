@@ -30,43 +30,11 @@ The simulation generates a band-limited message, modulates it onto five carriers
 
 ### Transmitter and Receiver Design
 
-```text
-                         Original message x(t)
-                                   |
-                           Scale input by 34.6
-                                   |
-              +---------+----------+----------+---------+
-              |         |          |          |         |
-           6 Hz       8 Hz       10 Hz      12 Hz     14 Hz
-           x 0.3      x 0.9      x 1.0      x 0.9     x 0.3
-              |         |          |          |         |
-              +---------+----------+----------+---------+
-                                   |
-                              Weighted sum
-                                   |
-                        FFT-based spectral scaling
-                                   |
-                          Transmitted signal y(t)
-                                   |
-                              Add AWGN
-                                   |
-                         Noisy received signal
-                                   |
-              +---------+----------+----------+---------+
-              |         |          |          |         |
-           6 Hz       8 Hz       10 Hz      12 Hz     14 Hz
-           LPF        LPF        LPF        LPF       LPF
-           1 Hz       1 Hz       1 Hz       1 Hz      1 Hz
-           x 0.3      x 0.7      x 1.0      x 0.7     x 0.3
-              |         |          |          |         |
-              +---------+----------+----------+---------+
-                                   |
-                              Weighted sum
-                                   |
-                   Remove DC offset and RMS normalise
-                                   |
-                          Reconstructed message
-```
+<p align="center">
+  <img src="images/explanation/system-architecture.svg"
+       alt="Multi-Carrier DSB-SC System Architecture"
+       width="900">
+</p>
 
 Each transmitter branch multiplies the entire message by a cosine at the specified carrier frequency and applies its weight. Each receiver branch multiplies the received signal by the corresponding cosine, applies a **1.0 Hz low-pass FIR filter**, and applies its receiver weight.
 
